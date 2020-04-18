@@ -24,7 +24,7 @@ class bitrevTests(unittest.TestCase):
         bravo = findopp.bitrev(1, 2)
         self.assertEqual(bravo, 2)
 
-    def testVaried(self):
+    def testTruncate1(self):
         """
         input of
             inval       int 37 = binary 0010 0101
@@ -44,6 +44,28 @@ class bitrevTests(unittest.TestCase):
         """
         delta = findopp.bitrev(37, 5)
         self.assertEqual(delta, 20)
+
+    def testCorrectn1(self):
+        """
+        input of
+            inval       int 37 = binary 0010 0101
+            nbits       6
+        Should yield int 41 = binary 0010 1001 because the number is considered to have a length of 6 bits, meaning that
+        the rightmost 6 bits are flipped
+        """
+        echo = findopp.bitrev(37, 6)
+        self.assertEqual(echo, 41)
+
+    def testOvershootn1(self):
+        """
+        input of
+            inval       int 37 = binary 0010 0101
+            nbits       8
+        Should yield int 164 = binary 1010 0100 because the number is considered to have a length of 8 bits, meaning
+        that the rightmost 8 bits are flipped
+        """
+        foxtrot = findopp.bitrev(37, 8)
+        self.assertEqual(foxtrot, 164)
 
 
 class bitrev2Tests(unittest.TestCase):
@@ -68,7 +90,7 @@ class bitrev2Tests(unittest.TestCase):
         bravo = findopp.bitrev2(1, 2)
         self.assertEqual(bravo, 2)
 
-    def testVaried(self):
+    def testTruncate1(self):
         """
         input of
             inval       int 37 = binary 0010 0101
@@ -88,6 +110,28 @@ class bitrev2Tests(unittest.TestCase):
         """
         delta = findopp.bitrev2(37, 5)
         self.assertEqual(delta, 20)
+
+    def testCorrectn1(self):
+        """
+        input of
+            inval       int 37 = binary 0010 0101
+            nbits       6
+        Should yield int 41 = binary 0010 1001 because the number is considered to have a length of 6 bits, meaning that
+        the rightmost 6 bits are flipped and the rest of the bits are truncated
+        """
+        echo = findopp.bitrev2(37, 6)
+        self.assertEqual(echo, 41)
+
+    def testOvershootn1(self):
+        """
+        input of
+            inval       int 37 = binary 0010 0101
+            nbits       8
+        Should yield int 164 = binary 1010 0100 because the number is considered to have a length of 8 bits, meaning
+        that the rightmost 8 bits are flipped
+        """
+        foxtrot = findopp.bitrev2(37, 8)
+        self.assertEqual(foxtrot, 164)
 
 
 class bitrev3Tests(unittest.TestCase):
@@ -110,7 +154,7 @@ class bitrev3Tests(unittest.TestCase):
     testn1
     """
 
-    def testVaried(self):
+    def testTruncate1(self):
         """
         input of
             x       int 37 = binary 0000 0000 0000 0000 0000 0000 0010 0101
@@ -120,8 +164,19 @@ class bitrev3Tests(unittest.TestCase):
         charlie = findopp.bitrev3(37)
         self.assertEqual(charlie, 2751463424)
 
+    """
+    testCorrectn doesn't make sense with bitrev3 because there is no nbits argument, it is always 32
+    """
 
-
+    def testOvershootn1(self):
+        """
+        input of
+            x       int 4294967298 = binary 0001 0000 0000 0000 0000 0000 0000 0000 0010
+        because bitrev3 only looks at 32 bits, the leftmost 4 bits will be ignored. binary result should be
+        0100 0000 0000 0000 0000 0000 0000 0000 = unsigned 1073741824 = signed 1073741824
+        """
+        foxtrot = findopp.bitrev3(4294967298)
+        self.assertEqual(foxtrot, 1073741824)
 
 if __name__ == '__main__':
     unittest.main()
