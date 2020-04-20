@@ -35,11 +35,12 @@ class bitrevTests(unittest.TestCase):
         charlie = findopp.bitrev(37, 1)
         self.assertEqual(charlie, 1)
 
+    def testTruncate2(self):
         """
         input of
             inval       int 37 = binary 0010 0101
             nbits       5
-        Should yield int 20 = binary 0001 0100 because the number is considered to have a length of 5 bits, meaning 
+        Should yield int 20 = binary 0001 0100 because the number is considered to have a length of 5 bits, meaning
         that the rightmost 5 bits are flipped to make 20, and the rest of the bits are truncated
         """
         delta = findopp.bitrev(37, 5)
@@ -101,11 +102,12 @@ class bitrev2Tests(unittest.TestCase):
         charlie = findopp.bitrev2(37, 1)
         self.assertEqual(charlie, 1)
 
+    def testTruncate2(self):
         """
         input of
             inval       int 37 = binary 0010 0101
             nbits       5
-        Should yield int 20 = binary 0001 0100 because the number is considered to have a length of 5 bits, meaning 
+        Should yield int 20 = binary 0001 0100 because the number is considered to have a length of 5 bits, meaning
         that the rightmost 5 bits are flipped to make 20, and the rest of the bits are truncated
         """
         delta = findopp.bitrev2(37, 5)
@@ -137,7 +139,8 @@ class bitrev2Tests(unittest.TestCase):
 class bitrev3Tests(unittest.TestCase):
     """
     While bitrev and bitrev2 aim to have the same behavior with different implementations, bitrev3 is meant to have
-    different behavior. It does away with the nbits field and instead assumes all inputs 'x' are 32 bit numbers.
+    different behavior. It does away with the nbits field and instead assumes all inputs 'x' are 32 bit numbers. This
+    means tests don't translate as well between bitrev/bitrev2 and bitrev3.
     """
     def testn1(self):
         """
