@@ -26,7 +26,7 @@ class GeneralWriterTest(unittest.TestCase):
         It has since been fixed.
         """
         bravo = file_writers.GeneralWriter("test.txt", "a")
-        self.assertEqual(True, bravo.writable())
+        self.assertEqual(False, bravo.writable())  # False because file has not yet been opened.
         bravo.open("w")
         self.assertEqual(True, bravo.writable())
         bravo.close()
