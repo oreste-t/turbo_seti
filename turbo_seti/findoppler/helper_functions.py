@@ -6,6 +6,14 @@ logger_hf = logging.getLogger(__name__)
 
 
 def chan_freq(header, fine_channel, tdwidth, ref_frame):
+    """
+
+    :param header:              dict,       contains info on coarse channel
+    :param fine_channel:        int,
+    :param tdwidth:             int,
+    :param ref_frame:           int,
+    :return:
+    """
     fftlen = header[b'NAXIS1']
     chan_index = fine_channel - (tdwidth-fftlen)/2
     chanfreq = header[b'FCNTR'] + (chan_index - fftlen/2)*header[b'DELTAF']
@@ -15,12 +23,19 @@ def chan_freq(header, fine_channel, tdwidth, ref_frame):
     return chanfreq
 
 
-#  ======================================================================  #
-#  This function bit-reverses the given value "inval" with the number of   #
-#  bits, "nbits".    ----  R. Ramachandran, 10-Nov-97, nfra.               #
-#  python version ----  H. Chen   Modified 2014                            #
-#  ======================================================================  #
+
 def bitrev(inval, nbits):
+    """
+    This function bit-reverses the given value "inval" with the number of
+    bits, "nbits".    ----  R. Ramachandran, 10-Nov-97, nfra.
+    python version ----  H. Chen   Modified 2014
+
+    :param inval:   number to be bit-reversed
+    :param nbits:   The length of inval in bits. If user only wants the bit-reverse of a certain amount of bits of
+                    inval, nbits is the amount of bits to be reversed counting from the least significant (rightmost)
+                    bit. Any bits beyond this length will not be reversed and will be truncated from the result.
+    :return:        the bit-reverse of inval. If there are more significant bits beyond nbits, they are truncated.
+    """
     if nbits <= 1:
         ibitr = inval
     else:
@@ -35,23 +50,37 @@ def bitrev(inval, nbits):
             ibitr += (1 & k) * ifact
     return ibitr
 
-#  ======================================================================  #
-#  This function bit-reverses the given value "inval" with the number of   #
-#  bits, "nbits".                                                          #
-#  python version ----  H. Chen   Modified 2014                            #
-#  reference: stackoverflow.com/questions/12681945                         #
-#  ======================================================================  #
+
 def bitrev2(inval, nbits, width=32):
+    """
+    This function bit-reverses the given value "inval" with the number of bits, "nbits".                                                          #
+    python version ----  H. Chen   Modified 2014
+    reference: stackoverflow.com/questions/12681945
+
+    This function serves the same purpose as bitrev, but is unused. It is slightly slower than bitrev. UNUSED
+    :param inval:   number to be bit-reversed
+    :param nbits:   The length of inval in bits. If user only wants the bit-reverse of a certain amount of bits of
+                    inval, nbits is the amount of bits to be reversed counting from the least significant (rightmost)
+                    bit. Any bits beyond this length will not be reversed and will be truncated from the result.
+    :param width:   the maximum length of inval in bits. Must be greater than or equal to nbits
+    :return:        the bit-reverse of inval. If there are more significant bits beyond nbits, they are truncated.
+    """
     b = '{:0{width}b}'.format(inval, width=width)
     ibitr = int(b[-1:(width-1-nbits):-1], 2)
     return ibitr
 
-#  ======================================================================  #
-#  This function bit-reverses the given value "inval" with 32bits    #
-#  python version ----  E.Enriquez   Modified 2016                            #
-#  reference: stackoverflow.com/questions/12681945                         #
-#  ======================================================================  #
+
 def bitrev3(x):
+    """
+    This function bit-reverses the given value "x" with 32bits
+    python version ----  E.Enriquez   Modified 2016
+    reference: stackoverflow.com/questions/12681945
+
+    Unlike the other two versions of bitrev, this one always reverses all 32 bits of the input, there is no nbits input
+    so one cannot bit-reverse only a part of the input. UNUSED
+    :param x:   32-bit number to be bit-reversed
+    :return:    bit-reversed x
+    """
     raise DeprecationWarning("WARNING: This needs testing.")
 
     x = ((x & 0x55555555) << 1) | ((x & 0xAAAAAAAA) >> 1)
