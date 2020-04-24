@@ -22,8 +22,9 @@ class GeneralWriter:
         :param mode:        string,     mode which we want to use to open file, same modes as the built-in python
                                         built-in open function: r - read, a - append, w -write, x - create
         """
-        self.filehandle = open(filename, mode)
-        self.filename = filename
+        with open(filename, mode) as myfile:
+            self.filehandle = myfile
+            self.filename = filename
         return None
 
     def close(self):
