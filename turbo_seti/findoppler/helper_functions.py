@@ -91,7 +91,16 @@ def bitrev3(x):
     return x
 
 def AxisSwap(inbuf, outbuf, nchans, NTSampInRead):
-    #long int    j1, j2, indx, jndx;
+    """
+    Given an array, interprets that array as a matrix of dimensions nchans columns and NTSampInRead rows and takes the
+    transpose. Does not return a new array, simply places the transpose in outbuf.
+    Unused.
+    :param inbuf:           ndarray,        array whose transpose we wish to take.
+    :param outbuf:          ndarray,        array to which we want the transpose to be written. Must have same length of
+                                            inbuf.
+    :param nchans:          int,            number of columns
+    :param NTSampInRead:    int,            number of rows
+    """
     for j1 in range(0, NTSampInRead):
         indx  = j1 * nchans
         for j2 in range(nchans-1, -1, -1):
@@ -99,6 +108,17 @@ def AxisSwap(inbuf, outbuf, nchans, NTSampInRead):
             outbuf[jndx]  = inbuf[indx+j2]
 
 def FlipBand(outbuf, nchans, NTSampInRead):
+    """
+    Takes every (NTSamInRead)'th element from outbuf and places NTsamInRead copies of it in result array,
+    filling it from the back. Does this nchans times. NTSampInRead * nchans must be less than or equal to
+    len(outbuf) + 1 or function will error.
+    Unused.
+    This function is incorrectly implemented. The result array is inaccessible by the caller, as it is not returned and
+    "outbuf = temp" does not actually change the original outbuf that the caller has access to, only the local outbuf.
+    :param outbuf:          ndarray,        array to be flipped
+    :param nchans:          int,            amount of iterations of repeated elements
+    :param NTSampInRead:    int,            step size
+    """
     temp = np.zeros(nchans*NTSampInRead, dtype=np.float64)
 
     indx  = (nchans - 1);
@@ -111,6 +131,16 @@ def FlipBand(outbuf, nchans, NTSampInRead):
     return
 
 def FlipX(outbuf, xdim, ydim):
+    """
+    This function takes in an array of values and iteratively flips ydim chunks of values of length xdim. For example,
+    if you have an array [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] and enter it with xdim = 5 and ydim = 2, the array will be
+    modified to become [5, 4, 3, 2, 1, 10, 9, 8, 7, 6]. Note that if you wish for the whole array to be modified in this
+    way, xdim * ydim should equal the length of the array. If ydim * xdim is greater than the length of the array, this
+    function will error.
+    :param outbuf:          ndarray,        an array with shape = (int, 1)
+    :param xdim:            int,            size of segments to be flipped
+    :param ydim:            int,            amount of segments of size xdim to be flipped
+    """
     temp = np.empty_like(outbuf[0:xdim])
     logger_hf.debug("FlipX: temp array dimension: %s"%str(temp.shape))
 
@@ -121,7 +151,11 @@ def FlipX(outbuf, xdim, ydim):
     return
 
 def comp_stats(arrey):
-    #Compute mean and stddev of floating point vector array in a fast way, without using the outliers.
+    """
+    Compute mean and stddev of floating point vector array in a fast way, without using the outliers.
+    :param arrey:       ndarray,        floating point vector array
+    :return:            float, float,   median and standard deviation of input array
+    """
 
     new_vec = np.sort(arrey,axis=None)
 
