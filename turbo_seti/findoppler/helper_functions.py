@@ -6,18 +6,11 @@ logger_hf = logging.getLogger(__name__)
 
 
 def chan_freq(header, fine_channel, tdwidth, ref_frame):
-    """
-
-    :param header:              dict,       contains info on coarse channel
-    :param fine_channel:        int,
-    :param tdwidth:             int,
-    :param ref_frame:           int,
-    :return:
-    """
+    
     fftlen = header[b'NAXIS1']
     chan_index = fine_channel - (tdwidth-fftlen)/2
     chanfreq = header[b'FCNTR'] + (chan_index - fftlen/2)*header[b'DELTAF']
-    #/* apply doppler correction */
+    # apply doppler correction
     if ref_frame == 1:
         chanfreq = (1 - header[b'baryv']) * chanfreq
     return chanfreq
