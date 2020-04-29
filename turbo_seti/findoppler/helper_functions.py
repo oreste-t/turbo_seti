@@ -6,7 +6,7 @@ logger_hf = logging.getLogger(__name__)
 
 
 def chan_freq(header, fine_channel, tdwidth, ref_frame):
-    
+
     fftlen = header[b'NAXIS1']
     chan_index = fine_channel - (tdwidth-fftlen)/2
     chanfreq = header[b'FCNTR'] + (chan_index - fftlen/2)*header[b'DELTAF']
